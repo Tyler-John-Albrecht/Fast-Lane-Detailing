@@ -899,7 +899,7 @@
       <!-- ── Tier 1: The Commuter ── -->
       <div class="pkg reveal flex flex-col">
         <div class="overflow-hidden" style="height:220px;">
-          <img src="The%20Commuter.png" alt="The Commuter Package"
+          <img src="The-Full-Detail.jpg" alt="The Full Detail — Fast Lane Detailing"
                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
         </div>
         <div class="p-8 flex flex-col flex-1">
@@ -926,7 +926,7 @@
       <div class="pkg pkg-hero reveal flex flex-col" style="transition-delay:0.1s;">
         <div class="pkg-featured-badge">Most Popular</div>
         <div class="overflow-hidden" style="height:220px;">
-          <img src="Action%20Shot.png" alt="The New Car Reset"
+          <img src="Stage-1-correction.jpg" alt="Stage 1 Paint Correction — Fast Lane Detailing"
                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
         </div>
         <div class="p-8 flex flex-col flex-1">
@@ -953,7 +953,7 @@
       <!-- ── Tier 3: The Asset Protector ── -->
       <div class="pkg reveal flex flex-col" style="transition-delay:0.2s;">
         <div class="overflow-hidden" style="height:220px;">
-          <img src="Asset%20Protector.png" alt="The Asset Protector"
+          <img src="Ceramic-Coating.jpg" alt="Ceramic Coating — Fast Lane Detailing"
                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
         </div>
         <div class="p-8 flex flex-col flex-1">
@@ -1008,7 +1008,7 @@
       <!-- Engine Bay -->
       <div class="addon flex flex-col">
         <div style="height:180px; overflow:hidden;">
-          <img src="Engine%20Bay%20Detail.png" alt="Engine Bay Detail"
+          <img src="Engine-Bay.jpg" alt="Engine Bay Detail"
                class="w-full h-full object-cover">
         </div>
         <div class="p-5 flex flex-col flex-1">
@@ -1023,7 +1023,7 @@
       <!-- Interior Extraction -->
       <div class="addon flex flex-col">
         <div style="height:180px; overflow:hidden;">
-          <img src="Interior%20Reset.png" alt="Interior Extraction"
+          <img src="Interior-Extraction.jpg" alt="Interior Extraction"
                class="w-full h-full object-cover">
         </div>
         <div class="p-5 flex flex-col flex-1">
@@ -1053,7 +1053,7 @@
       <!-- Boat / Motorcycle -->
       <div class="addon flex flex-col">
         <div style="height:180px; overflow:hidden;">
-          <img src="ozone.png" alt="Boat and Motorcycle Detailing"
+          <img src="Boat%26Motorcycle.jpg" alt="Boat and Motorcycle Detailing"
                class="w-full h-full object-cover" style="object-position: center center;">
         </div>
         <div class="p-5 flex flex-col flex-1">
@@ -1125,7 +1125,7 @@
       <!-- Step 3 -->
       <div class="relative reveal" style="transition-delay:0.2s;">
         <div class="overflow-hidden mb-6" style="height:260px;">
-          <img src="Action%20Shot.png" alt="We do the work"
+          <img src="Stage-1-correction.jpg" alt="We do the work"
                class="w-full h-full object-cover">
         </div>
         <div class="relative pl-4">
@@ -1198,48 +1198,73 @@
 <section class="w-full py-20 bg-carbon" style="border-top:1px solid rgba(255,255,255,0.04);">
   <div class="max-w-6xl mx-auto px-4">
 
-    <div class="text-center mb-12 reveal">
+    <div class="text-center mb-8 reveal">
       <div class="label text-gold mb-3">Portfolio</div>
       <h2 class="display text-white" style="font-size: clamp(2rem, 5vw, 4rem);">
         THE WORK SPEAKS
       </h2>
+      <p class="text-muted text-sm mt-3" style="letter-spacing:0.03em;">Real client vehicles &middot; Swipe to see more &rarr;</p>
     </div>
 
-    <!-- Gallery grid — showcase hero full-width top -->
-    <div class="gallery-item reveal mb-2">
-      <img src="showcase.png" alt="BMW M5 paint correction result in studio"
-           class="w-full object-cover" style="height:420px; object-position: center 25%;">
+    <!-- Horizontal portfolio carousel — all real client vehicles, swipeable on mobile -->
+    <style>
+      .fld-carousel-wrap { position: relative; }
+      .fld-carousel {
+        display: flex; gap: 12px; overflow-x: auto;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch; padding-bottom: 10px;
+      }
+      .fld-carousel::-webkit-scrollbar { height: 6px; }
+      .fld-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 3px; }
+      .fld-carousel::-webkit-scrollbar-thumb { background: rgba(80,155,205,0.5); border-radius: 3px; }
+      .fld-slide {
+        flex: 0 0 auto; width: clamp(260px, 82vw, 420px);
+        scroll-snap-align: center; border-radius: 4px; overflow: hidden; background: #0f0f12;
+      }
+      .fld-slide img { width: 100%; height: 300px; object-fit: cover; display: block; }
+      .fld-arrow {
+        position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+        width: 46px; height: 46px; border-radius: 50%;
+        border: 1px solid rgba(80,155,205,0.4); background: rgba(6,6,8,0.8);
+        color: #509BCD; font-size: 24px; line-height: 1; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.25s, border-color 0.25s, color 0.25s; backdrop-filter: blur(4px);
+      }
+      .fld-arrow:hover { background: #509BCD; color: #060608; border-color: #509BCD; }
+      .fld-arrow-left { left: -8px; }
+      .fld-arrow-right { right: -8px; }
+      @media (max-width: 767px) {
+        .fld-arrow { display: none; }
+        .fld-slide { width: clamp(240px, 80vw, 340px); }
+        .fld-slide img { height: 240px; }
+      }
+    </style>
+    <div class="fld-carousel-wrap reveal">
+      <button class="fld-arrow fld-arrow-left" aria-label="Previous vehicles" onclick="fldScroll(-1)">&#8249;</button>
+      <div class="fld-carousel" id="fldCarousel">
+        <div class="fld-slide"><img src="Portfolio1.jpg"  alt="Exotic sports car detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio2.jpg"  alt="RV exterior detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio3.jpg"  alt="Mercedes G-Class detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio4.jpg"  alt="Corvette paint correction — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio5.jpg"  alt="SUV full detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio6.jpg"  alt="Sport sedan detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio7.jpg"  alt="Mustang paint correction — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio8.jpg"  alt="Classic muscle car detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio9.jpg"  alt="Motorcycle detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio10.jpg" alt="Crossover detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+        <div class="fld-slide"><img src="Portfolio11.jpg" alt="Jeep Wrangler detail — Fast Lane Detailing, Battle Creek MI" loading="lazy"></div>
+      </div>
+      <button class="fld-arrow fld-arrow-right" aria-label="Next vehicles" onclick="fldScroll(1)">&#8250;</button>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 reveal">
-      <div class="gallery-item col-span-2">
-        <img src="Asset%20Protector.png" alt="Lamborghini detail"
-             class="w-full object-cover" style="height:240px;">
-      </div>
-      <div class="gallery-item">
-        <img src="Interior%20Reset.png" alt="Interior restoration"
-             class="w-full object-cover" style="height:240px;">
-      </div>
-      <div class="gallery-item">
-        <img src="Engine%20Bay%20Detail.png" alt="Engine bay detail"
-             class="w-full object-cover" style="height:240px;">
-      </div>
-    </div>
-
-    <!-- Sub-gallery row -->
-    <div class="grid grid-cols-3 gap-2 mt-2 reveal">
-      <div class="gallery-item">
-        <img src="The%20Commuter.png" alt="Daily driver detail"
-             class="w-full object-cover" style="height:160px;">
-      </div>
-      <div class="gallery-item">
-        <img src="Action%20Shot.png" alt="Paint correction process"
-             class="w-full object-cover" style="height:160px;">
-      </div>
-      <div class="gallery-item">
-        <img src="Guarantee-Image.png" alt="Luxury interior detail"
-             class="w-full object-cover" style="height:160px; object-position: center center;">
-      </div>
-    </div>
+    <script>
+      function fldScroll(dir){
+        var el = document.getElementById('fldCarousel');
+        if(!el) return;
+        var slide = el.querySelector('.fld-slide');
+        var amt = slide ? slide.offsetWidth + 12 : 300;
+        el.scrollBy({ left: dir * amt, behavior: 'smooth' });
+      }
+    </script>
 
   </div>
 </section>
