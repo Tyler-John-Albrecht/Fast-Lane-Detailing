@@ -2141,16 +2141,19 @@
 
   function submitBooking(e) {
     e.preventDefault();
-    // ── FORMSPREE — sends to fastlanedetailingbc@gmail.com ──────────────
+    // ── FORMSUBMIT — sends to fastlanedetailingbc@gmail.com (free, no account) ──
     var formData = {
       name:    document.getElementById('b-name').value,
       phone:   document.getElementById('b-phone').value,
       email:   document.getElementById('b-email').value,
       service: document.getElementById('b-service').value,
       vehicle: document.getElementById('b-vehicle').value,
-      message: document.getElementById('b-message').value
+      message: document.getElementById('b-message').value,
+      _subject: 'New Booking Inquiry — Fast Lane Detailing Website',
+      _template: 'table',
+      _captcha: 'false'
     };
-    fetch('https://formspree.io/fastlanedetailingbc@gmail.com', {
+    fetch('https://formsubmit.co/ajax/fastlanedetailingbc@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(formData)
