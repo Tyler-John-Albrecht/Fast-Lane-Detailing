@@ -603,7 +603,9 @@
 <style>
 /* --- no horizontal scroll (generated) --- */
 html,body{max-width:100%;overflow-x:hidden}
-@supports (overflow:clip){html,body{overflow-x:clip}}
+@supports (overflow:clip){html,body{overflow-x:clip;overflow-y:visible}}
+/* The bar's own colour, so the strip behind the phone's clock is never bare. */
+html{background:#060608}
 /* --- end no horizontal scroll --- */
 </style>
 <!-- BRECHTLAND-MOBILE-CHROME:END -->
@@ -2423,6 +2425,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
   </div>
 </div>
+
 
 
 
