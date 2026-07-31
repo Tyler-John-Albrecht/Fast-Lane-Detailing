@@ -115,6 +115,22 @@
       border-bottom: 1px solid rgba(80,155,205,0.07);
       transition: padding 0.3s ease;
     }
+      /* Paint whatever sits above this bar in the bar's own colour.
+         Belt-and-braces: on iOS the strip behind the clock sometimes ends up
+         above a top:0 fixed element no matter what viewport-fit says. This
+         pseudo-element rides along with the bar and fills that gap solid, so
+         page content can never show through up there. If there is no gap it
+         renders off-screen and costs nothing. */
+      .nav-glass::before{
+        content:'';
+        position:absolute;
+        left:0; right:0;
+        bottom:100%;
+        height:220px;
+        background:#060608;
+        pointer-events:none;
+      }
+
 
     /* ── Hero ─────────────────────────────────────── */
     .hero-img {
@@ -2407,6 +2423,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
   </div>
 </div>
+
 
 
 
