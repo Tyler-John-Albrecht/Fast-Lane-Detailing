@@ -108,12 +108,7 @@
 
     /* ── Nav ──────────────────────────────────────── */
     .nav-glass {
-      /* The bar's box starts 240px above the top of the screen so its own
-         background paints the strip behind the phone's clock. The matching
-         padding puts the logo back exactly where it was. Nothing here relies
-         on the browser honouring viewport-fit or safe-area insets. */
-      top: -240px !important;
-      padding-top: calc(240px + env(safe-area-inset-top, 0px));
+      padding-top: env(safe-area-inset-top, 0px);
       background: #060608;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -592,9 +587,12 @@
 <meta name="theme-color" content="#060608">
 <style>
 /* --- no horizontal scroll (generated) --- */
-html,body{max-width:100%;overflow-x:hidden}
-@supports (overflow:clip){html,body{overflow-x:clip;overflow-y:visible}}
-/* The bar's own colour, so the strip behind the phone's clock is never bare. */
+/* overflow-x lives on <body> ONLY. Putting it on <html> breaks position:fixed
+   on iOS Safari - fixed bars stop reaching the top of the screen, which is what
+   let page content show in the strip behind the clock. Body-only is enough:
+   the audit found no element that genuinely overflows. */
+body{max-width:100%;overflow-x:hidden}
+@supports (overflow:clip){body{overflow-x:clip}}
 html{background:#060608}
 /* --- end no horizontal scroll --- */
 </style>
