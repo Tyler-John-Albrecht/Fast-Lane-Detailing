@@ -107,18 +107,12 @@
 
     /* ── Nav ──────────────────────────────────────── */
     .nav-glass {
-      /* position:sticky, not fixed - copied from Walmart.
-         A sticky header stays IN the document flow, so it genuinely is the
-         top of the page and iOS paints the status-bar strip with it. A fixed
-         header is out of flow, so the top of the page becomes whatever sits
-         behind it - which is why the hero photo showed behind the clock.
-         Original note: these came from Tailwind utility
-         classes (fixed top-0 z-50) generated at runtime by the CDN script -
-         if that script is slow or blocked the bar loses its anchor and drops
-         to its static position, letting content show above it. */
+      /* Plain fixed bar. The strip behind the phone clock shows whatever page
+         content sits at the top - so the fix is the body padding below, which
+         keeps a solid background there instead of a photo. Same approach the
+         dental/plumbing/window-cleaning templates use. */
       position: fixed !important;
-      top: -240px !important;
-      padding-top: 240px !important;
+      top: 0 !important;
       left: 0 !important;
       right: 0 !important;
       width: 100% !important;
@@ -616,6 +610,16 @@ html{background:#060608}
 /* --- end no horizontal scroll --- */
 </style>
 <!-- BRECHTLAND-MOBILE-CHROME:END -->
+<style>
+/* --- header offset (generated) --- */
+/* The nav is fixed, so without this the hero photo sits underneath it AND in the
+   strip behind the phone's clock. Pushing content down by the nav's height means
+   the top of the page is the body background - a solid colour - exactly how the
+   dental, plumbing and window-cleaning templates handle it. */
+body{padding-top:101px}
+@media(max-width:767px){body{padding-top:89px}}
+/* --- end header offset --- */
+</style>
 </head>
 
 <body>
@@ -2432,6 +2436,7 @@ html{background:#060608}
 
   </div>
 </div>
+
 
 
 
