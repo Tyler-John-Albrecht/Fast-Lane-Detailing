@@ -606,18 +606,12 @@
 </style>
 
 <style id="scroll-container-fix">
-/* Safari paints the status-bar strip with the SCROLLING CONTENT layer and
-   leaves fixed layers out of it. Proven: nav rect.top reports 0px while page
-   text still shows above it. So the fix is to stop <body> being the scroller -
-   with no body-level scrolling layer, that strip falls back to the page
-   background. */
+/* Safari paints the status-bar strip from the SCROLLING CONTENT layer and
+   leaves fixed layers out of it - proven: nav rect.top reads 0px while page
+   text still shows above it. Taking scrolling off <body> removes that layer,
+   so the strip falls back to the page background. */
 html,body{height:100%;overflow:hidden;background:#060608;}
-#scrollport{
-  height:100%;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-}
+#scrollport{height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 </style>
 </head>
 
@@ -2050,7 +2044,7 @@ html,body{height:100%;overflow:hidden;background:#060608;}
         bar.style.transform = scrollY >= hero.offsetHeight * 0.85
           ? 'translateY(0)' : 'translateY(100%)';
       }
-      (document.getElementById('scrollport')||window).addEventListener('scroll',     checkSticky, { passive: true });
+      window.addEventListener('scroll',     checkSticky, { passive: true });
       document.addEventListener('touchmove', checkSticky, { passive: true });
       document.addEventListener('touchend',  checkSticky, { passive: true });
       checkSticky();
@@ -2060,7 +2054,7 @@ html,body{height:100%;overflow:hidden;background:#060608;}
   // ── Nav shrink + opaque on scroll ───────────────────
   const nav = document.getElementById('nav');
   const navInner = document.getElementById('nav-inner');
-  (document.getElementById('scrollport')||window).addEventListener('scroll', () => {
+  window.addEventListener('scroll', () => {
     if (window.scrollY > 60) {
       navInner.style.paddingTop    = '10px';
       navInner.style.paddingBottom = '10px';
@@ -2446,6 +2440,47 @@ html,body{height:100%;overflow:hidden;background:#060608;}
 
 
 
+
+
+</div>
+
+<script id="scrollport-shim">
+/* The page's own scripts listen for scroll on window and read pageYOffset.
+   Neither happens now that #scrollport is the scroller, so anything driven by
+   scroll position (the sticky CTA bar, the shrinking header) stops firing.
+   Re-broadcast the container's scroll as a window scroll event, and make the
+   usual scroll-position reads resolve to the container. */
+(function(){
+  var sp=document.getElementById('scrollport');
+  if(!sp) return;
+  sp.addEventListener('scroll',function(){
+    window.dispatchEvent(new Event('scroll'));
+  },{passive:true});
+  try{
+    Object.defineProperty(window,'pageYOffset',{get:function(){return sp.scrollTop;},configurable:true});
+    Object.defineProperty(window,'scrollY',    {get:function(){return sp.scrollTop;},configurable:true});
+    Object.defineProperty(document.documentElement,'scrollTop',{
+      get:function(){return sp.scrollTop;},
+      set:function(v){sp.scrollTop=v;},configurable:true});
+  }catch(e){}
+  var nativeScrollTo=window.scrollTo.bind(window);
+  window.scrollTo=function(x,y){
+    if(typeof x==='object'&&x){ sp.scrollTo(x); return; }
+    sp.scrollTop = (y===undefined?x:y) || 0;
+  };
+  // anchor links must scroll the container, not the window
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]');
+    if(!a) return;
+    var id=a.getAttribute('href').slice(1);
+    if(!id) return;
+    var el=document.getElementById(id);
+    if(!el) return;
+    e.preventDefault();
+    sp.scrollTo({top:el.offsetTop,behavior:'smooth'});
+  },true);
+})();
+</script>
 <!-- BRECHTLAND-ADVISOR:START (generated - run advisor/retrofit-client-site.ps1) -->
 <script>
 window.BRECHTLAND_ADVISOR = {
@@ -3148,7 +3183,7 @@ window.BRECHTLAND_ADVISOR = {
      is the moment they're actually deciding. Mobile only; the CSS above scopes
      the effect to <=767px. */
   var lastY = window.pageYOffset || 0, restTimer;
-  (document.getElementById('scrollport')||window).addEventListener('scroll', function () {
+  window.addEventListener('scroll', function () {
     if (opened) return;
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
     if (y > lastY + 5 && y > 240) wrap.classList.add('hidden');
@@ -3186,9 +3221,11 @@ window.BRECHTLAND_ADVISOR = {
      range from 100 to 9000), watch for the body scroll lock that every one of
      them sets when a modal opens, and hide until it's released. */
   function siteModalOpen() {
-    var b = document.body;
-    if (b.style.overflow === 'hidden') return true;
-    try { return getComputedStyle(b).overflow === 'hidden'; } catch (e) { return false; }
+    /* Only the INLINE style counts. Every template opens a modal with
+       `document.body.style.overflow = 'hidden'`. Reading the computed value
+       instead would also match a stylesheet rule - which a scroll-container
+       layout sets permanently, and the widget would hide itself forever. */
+    return document.body.style.overflow === 'hidden';
   }
   function syncModalState() {
     host.style.display = siteModalOpen() ? 'none' : '';
@@ -3203,7 +3240,5 @@ window.BRECHTLAND_ADVISOR = {
 
 </script>
 <!-- BRECHTLAND-ADVISOR:END -->
-
-</div>
 </body>
 </html>
