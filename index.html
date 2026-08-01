@@ -3181,5 +3181,43 @@ window.BRECHTLAND_ADVISOR = {
 
 </script>
 <!-- BRECHTLAND-ADVISOR:END -->
+
+<script>
+/* PIN THE HEADER TO THE TOP OF THE SCREEN - runtime, self-correcting.
+   Measures where the bar actually renders on this device and shifts it up by
+   exactly that amount, then pads it back so the logo does not move. Whatever
+   is offsetting it (browser chrome, safe area, engine quirk), this cancels it. */
+(function(){
+  var nav = document.getElementById('nav');
+  if (!nav) return;
+  var basePad = null;
+
+  function pin(){
+    if (basePad === null) {
+      basePad = parseFloat(getComputedStyle(nav).paddingTop) || 0;
+    }
+    // reset, measure, correct
+    nav.style.setProperty('top', '0px', 'important');
+    nav.style.setProperty('padding-top', basePad + 'px', 'important');
+
+    var gap = nav.getBoundingClientRect().top;
+    if (gap > 0.5) {
+      nav.style.setProperty('top', (-gap) + 'px', 'important');
+      nav.style.setProperty('padding-top', (basePad + gap) + 'px', 'important');
+    }
+  }
+
+  pin();
+  window.addEventListener('load', pin);
+  window.addEventListener('resize', pin);
+  window.addEventListener('scroll', pin, { passive: true });
+  window.addEventListener('orientationchange', function(){ setTimeout(pin, 300); });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', pin);
+    window.visualViewport.addEventListener('scroll', pin);
+  }
+  setInterval(pin, 400);
+})();
+</script>
 </body>
 </html>
