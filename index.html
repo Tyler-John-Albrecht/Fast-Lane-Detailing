@@ -54,7 +54,6 @@
       font-family: "Barlow", sans-serif;
       background-color: #060608;
       color: #F2F0EC;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -587,12 +586,17 @@
 <meta name="theme-color" content="#060608">
 <style>
 /* --- no horizontal scroll (generated) --- */
-/* overflow-x lives on <body> ONLY. Putting it on <html> breaks position:fixed
-   on iOS Safari - fixed bars stop reaching the top of the screen, which is what
-   let page content show in the strip behind the clock. Body-only is enough:
-   the audit found no element that genuinely overflows. */
-body{max-width:100%;overflow-x:hidden}
-@supports (overflow:clip){body{overflow-x:clip}}
+/* NO overflow rules on html or body.
+
+   Per spec, when <html> is overflow:visible the browser propagates <body>'s
+   overflow to the VIEWPORT - so 'body{overflow-x:hidden}' is not a safer
+   version of putting it on <html>, it is the same thing. On iOS Safari that
+   breaks position:fixed, which stopped the header reaching the top of the
+   screen and let page content show behind the clock.
+
+   The audit at 390px found no element that genuinely overflows, so no guard is
+   needed. If horizontal panning ever comes back, fix the element that is too
+   wide - do not put overflow on the root or body. */
 html{background:#060608}
 /* --- end no horizontal scroll --- */
 </style>
