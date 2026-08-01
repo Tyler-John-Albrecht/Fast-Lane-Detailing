@@ -107,6 +107,16 @@
 
     /* ── Nav ──────────────────────────────────────── */
     .nav-glass {
+      /* Position stated in plain CSS. These came from Tailwind utility
+         classes (fixed top-0 z-50) generated at runtime by the CDN script -
+         if that script is slow or blocked the bar loses its anchor and drops
+         to its static position, letting content show above it. */
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      z-index: 50 !important;
       padding-top: env(safe-area-inset-top, 0px);
       background: #060608;
       backdrop-filter: blur(18px);
@@ -3186,42 +3196,5 @@ window.BRECHTLAND_ADVISOR = {
 </script>
 <!-- BRECHTLAND-ADVISOR:END -->
 
-<script>
-/* PIN THE HEADER TO THE TOP OF THE SCREEN - runtime, self-correcting.
-   Measures where the bar actually renders on this device and shifts it up by
-   exactly that amount, then pads it back so the logo does not move. Whatever
-   is offsetting it (browser chrome, safe area, engine quirk), this cancels it. */
-(function(){
-  var nav = document.getElementById('nav');
-  if (!nav) return;
-  var basePad = null;
-
-  function pin(){
-    if (basePad === null) {
-      basePad = parseFloat(getComputedStyle(nav).paddingTop) || 0;
-    }
-    // reset, measure, correct
-    nav.style.setProperty('top', '0px', 'important');
-    nav.style.setProperty('padding-top', basePad + 'px', 'important');
-
-    var gap = nav.getBoundingClientRect().top;
-    if (gap > 0.5) {
-      nav.style.setProperty('top', (-gap) + 'px', 'important');
-      nav.style.setProperty('padding-top', (basePad + gap) + 'px', 'important');
-    }
-  }
-
-  pin();
-  window.addEventListener('load', pin);
-  window.addEventListener('resize', pin);
-  window.addEventListener('scroll', pin, { passive: true });
-  window.addEventListener('orientationchange', function(){ setTimeout(pin, 300); });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', pin);
-    window.visualViewport.addEventListener('scroll', pin);
-  }
-  setInterval(pin, 400);
-})();
-</script>
 </body>
 </html>
