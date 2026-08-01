@@ -3211,5 +3211,49 @@ window.BRECHTLAND_ADVISOR = {
 
 </script>
 <!-- BRECHTLAND-ADVISOR:END -->
+
+<script id="rect-readout">
+(function(){
+  function px(v){ return (Math.round(v*10)/10)+'px'; }
+  function run(){
+    var nav = document.getElementById('nav');
+    // an independent fixed probe, styled by nothing on this page
+    var t = document.createElement('div');
+    t.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;';
+    document.body.appendChild(t);
+    var de=document.documentElement, b=document.body;
+    var cs=getComputedStyle(de), bs=getComputedStyle(b);
+    var rows=[
+      ['nav rect.top',            px(nav.getBoundingClientRect().top)],
+      ['bare fixed div rect.top', px(t.getBoundingClientRect().top)],
+      ['html position',           cs.position],
+      ['html margin-top',         cs.marginTop],
+      ['html padding-top',        cs.paddingTop],
+      ['html transform',          cs.transform==='none'?'none':'SET'],
+      ['body position',           bs.position],
+      ['body margin-top',         bs.marginTop],
+      ['body padding-top',        bs.paddingTop],
+      ['body transform',          bs.transform==='none'?'none':'SET'],
+      ['scrollY',                 px(window.scrollY)]
+    ];
+    t.remove();
+    var box=document.getElementById('rectbox');
+    if(!box){
+      box=document.createElement('div'); box.id='rectbox';
+      box.style.cssText='position:fixed;top:130px;left:8px;right:8px;z-index:2147483647;'+
+        'background:#000;color:#fff;font:700 17px/1.7 ui-monospace,Menlo,monospace;'+
+        'padding:14px 16px;border:3px solid #fff;border-radius:8px;';
+      document.body.appendChild(box);
+    }
+    box.innerHTML = rows.map(function(r){
+      return r[0]+': <span style="color:#39FF14">'+r[1]+'</span>';
+    }).join('<br>');
+  }
+  run();
+  window.addEventListener('load',run);
+  window.addEventListener('scroll',run,{passive:true});
+  setInterval(run,500);
+})();
+</script>
 </body>
 </html>
