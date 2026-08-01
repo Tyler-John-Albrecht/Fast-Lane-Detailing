@@ -589,6 +589,32 @@ html,body{max-width:100%;overflow-x:hidden}
 @supports (overflow:clip){html,body{overflow-x:clip}}
 /* --- end no horizontal scroll --- */
 </style>
+<style>
+/* === HERO TOP OFFSET — same structure as the dental template ===
+   Dental's hero is `padding-top:76px` with the photo as a CHILD element, so the
+   top strip of the page is plain background and nothing can bleed behind the
+   nav or into the phone's status bar.
+
+   Here the photo is a background-image on the section itself, which paints the
+   FULL box from y=0 - including behind the nav. Padding alone does not stop
+   that, because backgrounds fill the padding area by default. Clipping the
+   background to the content box does: the photo now starts below the nav and
+   the strip above it is solid page background. */
+#home.hero-img{
+  padding-top: var(--navh, 101px);
+  background-clip: content-box;
+  background-origin: content-box;
+  background-color: #060608;
+}
+@media (max-width: 767px){
+  #home.hero-img{ padding-top: var(--navh-m, 101px); }
+}
+/* the absolutely-positioned overlays inside the hero must respect it too */
+#home > .absolute{ top: var(--navh, 101px); }
+@media (max-width: 767px){
+  #home > .absolute{ top: var(--navh-m, 101px); }
+}
+</style>
 </head>
 
 <body>
@@ -2405,6 +2431,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
   </div>
 </div>
+
 
 
 
