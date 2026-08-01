@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060608">
+<title>Diagnostic</title>
+<style>
+  html,body{margin:0;padding:0;background:#c0392b;font-family:-apple-system,system-ui,sans-serif;color:#fff}
+  /* a LIME bar pinned to top:0 - shows exactly where a fixed element lands */
+  #probe{position:fixed;top:0;left:0;right:0;height:120px;background:#39FF14;z-index:99999}
+  #probe b{color:#000;font:700 15px/120px -apple-system,sans-serif;padding-left:14px}
+  #out{padding:150px 16px 60px;font-size:19px;line-height:1.85;font-family:ui-monospace,Menlo,monospace}
+  #out div{border-bottom:1px solid rgba(255,255,255,.25);padding:7px 0}
+  span{color:#FFD400;font-weight:700}
+</style>
+</head>
+<body>
+<div id="probe"><b>LIME BAR = position:fixed; top:0</b></div>
+<div id="out"></div>
+<script>
+function px(n){return Math.round(n)+'px';}
+var probe=document.getElementById('probe');
+var cs=getComputedStyle(document.documentElement);
+var rows=[
+ ['probe rect.top', px(probe.getBoundingClientRect().top)],
+ ['safe-area-inset-top', getComputedStyle(document.body).getPropertyValue('--sat')||'n/a'],
+ ['window.innerHeight', px(window.innerHeight)],
+ ['visualViewport.height', window.visualViewport?px(window.visualViewport.height):'n/a'],
+ ['visualViewport.offsetTop', window.visualViewport?px(window.visualViewport.offsetTop):'n/a'],
+ ['documentElement.clientHeight', px(document.documentElement.clientHeight)],
+ ['screen.height', px(screen.height)],
+ ['devicePixelRatio', window.devicePixelRatio],
+ ['browser', /CriOS/.test(navigator.userAgent)?'Chrome iOS':/EdgiOS/.test(navigator.userAgent)?'Edge iOS':/FxiOS/.test(navigator.userAgent)?'Firefox iOS':/Safari/.test(navigator.userAgent)?'Safari iOS':'other']
+];
+// read the real env() value
+var t=document.createElement('div');
+t.style.cssText='position:fixed;top:0;height:env(safe-area-inset-top,0px);width:1px';
+document.body.appendChild(t);
+rows.splice(1,1,['env(safe-area-inset-top)', px(t.getBoundingClientRect().height)]);
+document.getElementById('out').innerHTML =
+  rows.map(function(r){return '<div>'+r[0]+'<br><span>'+r[1]+'</span></div>';}).join('');
+</script>
+</body>
+</html>
